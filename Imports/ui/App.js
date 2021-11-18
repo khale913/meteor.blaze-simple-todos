@@ -1,7 +1,22 @@
 import { Template } from "meteor/templating";
 import { TasksCollection } from "../api/TasksCollection";
+import { ReactiveDict } from "meteor/reactive-dict";
 import "./App.html";
 import "./Task";
+
+const HIDE_COMPLETED_STRING = "hideCompleted";
+
+Template.mainContainer.onCreated(function mainContainerOnCreated() {
+  this.state = new ReactiveDict();
+});
+
+Template.mainContainer.events({
+  "click #hide-completed-button"(event, instance) {
+    const currentHideCompleted = instance.state.get(HIDE_COMPLETED_STRING);
+    instance.state.set(HIDE_COMPLETED_STRING, !currentHideCompleted);
+    console.log(event, instance);
+  },
+});
 
 // pull tasks from db
 Template.mainContainer.helpers({
@@ -11,9 +26,26 @@ Template.mainContainer.helpers({
 });
 
 // sort todos by date created
+// Template.mainContainer.helpers({
+//   tasks() {
+//     return TasksCollection.find({}, { sort: { createdAt: -1 } });
+//   },
+// });
+
 Template.mainContainer.helpers({
   tasks() {
-    return TasksCollection.find({}, { sort: { createdAt: -1 } });
+    const instance = Template.instance();
+
+    const hideCompleted = instance.state.get(HIDE_COMPLETED_STRING);
+
+    const hideCompletedFilter = { isChecked: { $ne: true } };
+
+    return TasksCollection.find(hideCompleted ? hideCompletedFilter : {}, {
+      sort: { createdAt: -1 },
+    }).fetch();
+  },
+  hideCompleted() {
+    return Template.instance().state.get(HIDE_COMPLETED_STRING);
   },
 });
 
