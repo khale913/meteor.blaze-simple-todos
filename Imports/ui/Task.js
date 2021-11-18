@@ -10,3 +10,10 @@ Template.task.events({
     });
   },
 });
+
+Template.task.events({
+  "click .delete"() {
+    // delete the task item
+    TasksCollection.remove(this._id);
+  },
+});
