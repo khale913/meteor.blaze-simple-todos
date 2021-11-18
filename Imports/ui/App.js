@@ -14,7 +14,7 @@ Template.mainContainer.events({
   "click #hide-completed-button"(event, instance) {
     const currentHideCompleted = instance.state.get(HIDE_COMPLETED_STRING);
     instance.state.set(HIDE_COMPLETED_STRING, !currentHideCompleted);
-    console.log(event, instance);
+    // console.log(event, instance);
   },
 });
 
@@ -25,13 +25,7 @@ Template.mainContainer.helpers({
   },
 });
 
-// sort todos by date created
-// Template.mainContainer.helpers({
-//   tasks() {
-//     return TasksCollection.find({}, { sort: { createdAt: -1 } });
-//   },
-// });
-
+// sort todos and hide completed todos
 Template.mainContainer.helpers({
   tasks() {
     const instance = Template.instance();
@@ -46,6 +40,14 @@ Template.mainContainer.helpers({
   },
   hideCompleted() {
     return Template.instance().state.get(HIDE_COMPLETED_STRING);
+  },
+
+  // track of how many tasks remaining
+  incompleteCount() {
+    const incompleteTasksCount = TasksCollection.find({
+      isChecked: { $ne: true },
+    }).count();
+    return incompleteTasksCount ? `(${incompleteTasksCount})` : "";
   },
 });
 
