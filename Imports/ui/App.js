@@ -3,6 +3,11 @@ import { TasksCollection } from "../api/TasksCollection";
 import { ReactiveDict } from "meteor/reactive-dict";
 import "./App.html";
 import "./Task";
+import "./Login.js";
+
+const getUser = () => Meteor.user();
+
+const isUserLogged = () => !!getUser();
 
 const HIDE_COMPLETED_STRING = "hideCompleted";
 
@@ -48,6 +53,10 @@ Template.mainContainer.helpers({
       isChecked: { $ne: true },
     }).count();
     return incompleteTasksCount ? `(${incompleteTasksCount})` : "";
+  },
+
+  isUserLogged() {
+    return isUserLogged();
   },
 });
 
