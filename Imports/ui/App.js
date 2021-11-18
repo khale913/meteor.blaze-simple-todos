@@ -7,3 +7,23 @@ Template.mainContainer.helpers({
     return TasksCollection.find({});
   },
 });
+
+Template.form.events({
+  "submit .task-form"(e) {
+    // stop auto reload
+    e.preventDefault();
+
+    //get value
+    const target = e.target;
+    const text = target.text.value;
+
+    // Insert task into collection
+    TasksCollection.insert({
+      text,
+      createdAt: new Date(),
+    });
+
+    // clear form input
+    target.text.value = "";
+  },
+});

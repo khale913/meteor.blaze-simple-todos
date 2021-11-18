@@ -16,3 +16,5 @@ Meteor.startup(() => {
     ].forEach(insertTask);
   }
 });
+
+insertTask("this is another task");
