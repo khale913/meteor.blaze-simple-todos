@@ -3,19 +3,21 @@ import { Template } from "meteor/templating";
 import "./Task.html";
 
 Template.task.events({
-  "click .toggle-checked"() {
+  "click .toggle-checked"(e) {
     // set checked to opposite of value
     Meteor.call("tasks.setIsChecked", this._id, !this.isChecked);
+
+    if (!this.isChecked) {
+      const selectedItem = e.target.closest("#taskBox");
+      selectedItem.style.background = "green";
+      console.log(selectedItem);
+    } else {
+      const selectedItem = e.target.closest("#taskBox");
+      selectedItem.style.background = "none";
+    }
   },
 
   "click .delete"() {
     Meteor.call("tasks.remove", this._id);
   },
 });
-
-// Template.task.events({
-//   "click .delete"() {
-//     // delete the task item
-//     TasksCollection.remove(this._id);
-//   },
-// });
