@@ -105,11 +105,7 @@ Template.form.events({
     const text = target.text.value;
 
     // Insert task into collection
-    TasksCollection.insert({
-      text,
-      userId: getUser()._id,
-      createdAt: new Date(),
-    });
+    Meteor.call("tasks.insert", text);
 
     // clear form input
     target.text.value = "";
