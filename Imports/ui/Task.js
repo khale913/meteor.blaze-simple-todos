@@ -9,7 +9,8 @@ Template.task.events({
 
     if (!this.isChecked) {
       const selectedItem = e.target.closest("#taskBox");
-      selectedItem.style.background = "green";
+      selectedItem.style.background = "#8CE68C";
+
       console.log(selectedItem);
     } else {
       const selectedItem = e.target.closest("#taskBox");
